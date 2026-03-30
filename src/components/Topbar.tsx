@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from '../../assets/logo-complete-removebg-preview.png'
+import logo from '../assets/logo-complete-removebg-preview.png'
 import AuthModal from "../auth/AuthModal";
 
 const Topbar = () => {
