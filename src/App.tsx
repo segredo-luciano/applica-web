@@ -15,14 +15,14 @@ function App() {
           <Route
             path="/"
             element={
-              !isAuthenticated ? <Home /> : <Navigate to="/recruiter" />
+              !isAuthenticated ? <Home /> : <Navigate to="/recrutador" />
             }
           />
         </Route>
 
         <Route element={<RecruiterLayout />}>
           <Route
-            path="/recruiter"
+            path="/recrutador"
             element={
               isAuthenticated ? <RecruiterDashboard /> : <Navigate to="/" />
             }

@@ -5,7 +5,9 @@ export default function PublicLayout() {
   return (
     <>
       <Topbar />
-      <Outlet />
+      <main className="pt-8">
+        <Outlet />
+      </main>
     </>
   );
 }

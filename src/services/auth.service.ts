@@ -15,12 +15,29 @@ export const registerUser = async (payload: {
         body: JSON.stringify(payload),
     });
 
-    console.log('servico: ', res)
+    if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Failed to register");
+    }
+
+    return res.json();
+};
+
+export const loginUser = async (payload: {
+    email: string;
+    password: string;
+}) => {
+    const res = await fetch(`${API_URL}/recruiter/login`, {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+    });
 
     if (!res.ok) {
         const error = await res.json();
-        console.error('erro servico: ',error)
-        throw new Error(error.message || "Failed to register");
+        throw new Error(error.message || "Failed to login");
     }
 
     return res.json();

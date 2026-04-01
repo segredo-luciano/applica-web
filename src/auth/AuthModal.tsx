@@ -15,28 +15,28 @@ export default function AuthModal({ open, onClose }: any) {
     if (!open) return null;    
 
     return (
-    <div onClick={onClose}
-     className="fixed inset-0 bg-black/50 flex items-center justify-center">
-        <div onClick={(e) => e.stopPropagation()}
-        className="bg-white p-6 rounded-xl w-1/2 h-114 relative overflow-y-auto">       
+        <div onClick={onClose}
+        className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div onClick={(e) => e.stopPropagation()}
+            className="bg-white p-6 rounded-xl h-114 relative overflow-y-auto">       
 
-            {mode === "login" && (
-                <LoginForm switchToRegister={() => setMode("register")} />
-            )}
+                {mode === "login" && (
+                    <LoginForm switchToRegister={() => setMode("register")} />
+                )}
 
-            {mode === "register" && (
-                <RegisterForm 
-                    switchToLogin={() => setMode("login")}
-                    onSuccess={() => setMode("success")}
-                />
-            )}
+                {mode === "register" && (
+                    <RegisterForm 
+                        switchToLogin={() => setMode("login")}
+                        onSuccess={() => setMode("success")}
+                    />
+                )}
 
-            {mode === "success" && (
-                <SuccessScreen goToLogin={() => setMode("login")} />
-            )}
+                {mode === "success" && (
+                    <SuccessScreen goToLogin={() => setMode("login")} />
+                )}
 
+            </div>
         </div>
-    </div>
-  );
+    );
 
 }
