@@ -106,37 +106,10 @@ export default function Home() {
             </div>
 
             <div className="w-3/4 justify-items-start ml-2">
-                <div className="w-1/2 flex justify-center">
-                    <button onClick={() =>
-                            setRange((prev) =>
-                            prev === RangeJobFilter.DAY ? '' : RangeJobFilter.DAY
-                            )
-                        }
-                        className={`bg-white rounded-2xl p-2
-                            text-xs font-semibold cursor-pointer
-                            transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02]
-                            hover:shadow-blue-400
-                            ${range === RangeJobFilter.DAY
-                            ? 'shadow-lg shadow-blue-400/50 text-blue-600'
-                            : 'shadow-lg'
-                            }`}>Últimas 24 horas</button>
-                    <button onClick={() =>
-                            setRange((prev) =>
-                            prev === RangeJobFilter.WEEK ? "" : RangeJobFilter.WEEK
-                            )
-                        }
-                        className={`bg-white rounded-2xl p-2 ml-8
-                            text-xs font-semibold cursor-pointer
-                            transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02]
-                            hover:shadow-blue-400
-                            ${range === RangeJobFilter.WEEK
-                                ? 'shadow-lg shadow-blue-400/50 text-blue-600'
-                                : 'shadow-lg'
-                            }`}>Última semana</button>
-                </div>
+                
                 
                 <div className="w-1/2">
-                    <div className="text-3xl mt-4 mb-4 text-blue-600 decoration-from-font font-extrabold
+                    <div className="text-3xl text-blue-600 decoration-from-font font-extrabold
                             text-shadow-lg">Essas são as vagas postadas pelos recrutadores ⬇
                     </div>                
                 </div>   
@@ -151,40 +124,71 @@ export default function Home() {
                 :
                 (
                     
-                <div className="relative w-full mt-4 flex">
+                    
+                <div className="relative w-full mt-4">
+                    <div className="w-1/2 flex justify-center mb-4">
+                        <button onClick={() =>
+                                setRange((prev) =>
+                                prev === RangeJobFilter.DAY ? '' : RangeJobFilter.DAY
+                                )
+                            }
+                            className={`bg-white rounded-2xl p-2
+                                text-xs font-semibold cursor-pointer
+                                transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02]
+                                hover:shadow-blue-400
+                                ${range === RangeJobFilter.DAY
+                                ? 'shadow-lg shadow-blue-400/50 text-blue-600'
+                                : 'shadow-lg'
+                                }`}>Últimas 24 horas</button>
+                        <button onClick={() =>
+                                setRange((prev) =>
+                                prev === RangeJobFilter.WEEK ? "" : RangeJobFilter.WEEK
+                                )
+                            }
+                            className={`bg-white rounded-2xl p-2 ml-8
+                                text-xs font-semibold cursor-pointer
+                                transition-all duration-500 ease-out hover:-translate-y-2 hover:scale-[1.02]
+                                hover:shadow-blue-400
+                                ${range === RangeJobFilter.WEEK
+                                    ? 'shadow-lg shadow-blue-400/50 text-blue-600'
+                                    : 'shadow-lg'
+                                }`}>Última semana</button>
+                    </div>
                     {jobs?.length! > 0 ? (
-                        <>
-                        {jobs!.slice(0, 3).map((job, index) => (
-                            <div
-                                onClick={() => setSelectedJob(job)}
-                                key={job.code}
-                                className={`
-                                    w-80 bg-white rounded-2xl shadow-xl transition-all duration-500
-                                    
-                                    ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] hover:scale-[1.02] hover:shadow-blue-300
-                                    cursor-pointer
-                                    ${index === 0 && "z-20 scale-100 translate-y-0"}
-                                    ${index === 1 && "z-10 scale-95 translate-y-4 opacity-90"}
-                                    ${index === 2 && "z-5 scale-90 translate-y-8 opacity-80"}
-                                `}
-                                >
-                                <div className="pt-6 pr-6 pl-6 pb-2">
-                                    <div className="text-lg font-bold">{job.title}</div>
-                                    <div className="mt-8 mb-8 text-sm">{job.description!.length > 300 ? job.description!.slice(0, 300) + "..." : job.description!}</div>
-                                    <div className="">
-                                        <div className="text-[12px] justify-self-end">Vaga postada em: {extractDate(job.created_at!)}</div>
-                                    </div>                                
-                                </div>
+                        <>                            
+                            <div className="flex">
+                                {jobs!.slice(0, 3).map((job, index) => (
+                                    <div
+                                        onClick={() => setSelectedJob(job)}
+                                        key={job.code}
+                                        className={`
+                                            w-80 bg-white rounded-2xl shadow-xl transition-all duration-500
+                                            
+                                            ease-out hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(0,0,0,0.15)] hover:scale-[1.02] hover:shadow-blue-300
+                                            cursor-pointer
+                                            ${index === 0 && "z-20 scale-100 translate-y-0"}
+                                            ${index === 1 && "z-10 scale-95 translate-y-4 opacity-90"}
+                                            ${index === 2 && "z-5 scale-90 translate-y-8 opacity-80"}
+                                        `}
+                                        >
+                                        <div className="pt-6 pr-6 pl-6 pb-2">
+                                            <div className="text-lg font-bold">{job.title}</div>
+                                            <div className="mt-8 mb-8 text-sm">{job.description!.length > 300 ? job.description!.slice(0, 300) + "..." : job.description!}</div>
+                                            <div className="">
+                                                <div className="text-[12px] justify-self-end">Vaga postada em: {extractDate(job.created_at!)}</div>
+                                            </div>                                
+                                        </div>
 
-                                <div className="justify-self-end border-t-2 border-t-gray-100 w-full">
-                                    <div className="flex p-2">
-                                        <img className="w-5 h-5 self-center mr-2" 
-                                            src={getCompanyLogo(job.company_domain, job.company_logo)} alt="" />
-                                        <p className="text-gray-500">{job.company}</p>
+                                        <div className="justify-self-end border-t-2 border-t-gray-100 w-full">
+                                            <div className="flex p-2">
+                                                <img className="w-5 h-5 self-center mr-2" 
+                                                    src={getCompanyLogo(job.company_domain, job.company_logo)} alt="" />
+                                                <p className="text-gray-500">{job.company}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
-                        ))}
                         </>
                     )
                     :
