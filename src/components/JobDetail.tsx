@@ -1,9 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { extractDate } from "../utils/dateFormat";
 import { getCompanyLogo } from "../utils/getCompanyLogo";
 import { apply } from "../services/application.service";
+import toast from "react-hot-toast";
 
 export default function JobDetail({ onClose, job }: any) {
+
+    const [loading, setLoading] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const handleUpload = () => {
@@ -12,17 +15,22 @@ export default function JobDetail({ onClose, job }: any) {
 
     const handleApply = async (
         e: React.ChangeEvent<HTMLInputElement>
-        ) => {
+        ) => {        
         const file = e.target.files?.[0];
 
         if (!file) return;
 
+        setLoading(true);
+
         if (file.type !== "application/pdf") {
-            alert("Only PDF files are allowed");
+            setLoading(false);
+            toast.error("Currículo deve ser no formato PDF");
             return;
         }
 
         await apply(file, job.code);
+
+        setLoading(false);
 
         onClose();
     };
@@ -51,13 +59,23 @@ export default function JobDetail({ onClose, job }: any) {
                     </div>
 
                     <div className="text-xl justify-self-end">
-                        <button onClick={handleUpload}
-                            className="bg-blue-600 text-white font-medium
-                            p-1 pl-3 pr-3 rounded-xl cursor-pointer
-                            transition motion-safe:hover:-translate-x-0.5
-                            hover:bg-blue-800">
-                            Applicar
-                        </button> 
+                        {loading ? (
+                            <div className="justify-center flex space-x-1">
+                                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce"></div>
+                                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:0.2s]"></div>
+                                <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce [animation-delay:0.4s]"></div>
+                            </div>
+                        )
+                        :
+                        (
+                            <button onClick={handleUpload}
+                                className="bg-blue-600 text-white font-medium
+                                p-1 pl-3 pr-3 rounded-xl cursor-pointer
+                                transition motion-safe:hover:-translate-x-0.5
+                                hover:bg-blue-800">
+                                Applicar
+                            </button> 
+                        )}                        
 
                         <input
                         ref={fileInputRef}

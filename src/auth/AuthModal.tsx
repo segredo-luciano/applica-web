@@ -18,7 +18,7 @@ export default function AuthModal({ open, onClose }: any) {
         <div onClick={onClose}
         className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
             <div onClick={(e) => e.stopPropagation()}
-            className="bg-white p-6 rounded-xl h-114 relative overflow-y-auto">       
+            className="bg-white p-6 rounded-xl w-xl h-114 relative overflow-y-auto">       
 
                 {mode === "login" && (
                     <LoginForm switchToRegister={() => setMode("register")} />

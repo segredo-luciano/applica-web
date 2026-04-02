@@ -5,7 +5,7 @@ export default function PublicLayout() {
   return (
     <>
       <Topbar />
-      <main className="pt-8">
+      <main className="pt-4">
         <Outlet />
       </main>
     </>

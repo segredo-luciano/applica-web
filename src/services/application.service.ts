@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import type { Job } from "../types/job";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,15 +13,16 @@ export const apply = async (file: File, jobCode: number) => {
         const response = await fetch(`${API_URL}/application`, {
         method: "POST",
         body: formData,
-        });
+        });        
 
+        const data = await response.json();
         if (!response.ok) {
-        throw new Error("Upload failed");
+            throw new Error(data.message || "Erro ao enviar currículo");
         }
 
-        alert("CV uploaded successfully!");
-    } catch (err) {
+        toast.success("Currículo applicado com sucesso!");
+    } catch (err: any) {
         console.error(err);
-        alert("Error uploading CV");
+        toast.error(err.message || "Erro ao enviar currículo");
     }
 };

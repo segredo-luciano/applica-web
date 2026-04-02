@@ -2,6 +2,7 @@ import { useState } from "react";
 import CompanyAutocomplete from "./CompanyAutocomplete";
 import type { Company } from "../types/company";
 import { registerUser } from "../services/auth.service";
+import toast from "react-hot-toast";
 
 type Props = {
   switchToLogin: () => void;
@@ -22,18 +23,27 @@ export default function RegisterForm({ switchToLogin, onSuccess }: Props) {
     confirmPassword.length > 0;
 
     const handleRegister = async () => {
-        if(!company) {
-            alert('Selecione uma empresa!')
+        if(!name) {
+            toast.error('Insira seu nome!');
             return;
         }
 
-        if(!email) return;
+        if(!email || !email.includes('@')) {
+            toast.error('Insira um email válido!')
+            return;
+        } 
+        
+        if(!company) {
+            toast.error('Selecione uma empresa!')
+            return;
+        }
+
         if(password === '') {
-            alert('Favor criar uma senha')
+            toast.error('Favor criar uma senha')
             return;
         }
         if (password !== confirmPassword) {
-            alert('As senhas devem bater')
+            toast.error('As senhas devem bater')
             return
         };        
 
