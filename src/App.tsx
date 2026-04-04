@@ -4,50 +4,56 @@ import RecruiterLayout from "./layout/RecruiterLayout";
 import Home from "./pages/Home";
 import RecruiterDashboard from "./pages/RecruiterDashboard";
 import { Toaster } from "react-hot-toast";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
-const isAuthenticated = !!localStorage.getItem("token");
-
-function App() {  
+function AppRoutes() {
+  const { isAuthenticated } = useAuth();
 
   return (
-    <BrowserRouter>
-      <Toaster position="top-right" reverseOrder={false} 
-        toastOptions={{
-          success: {
-            style: {
-              background: "#BFDBFE",
-              color: "#2563EB",
-            },
-          },
-          error: {
-            style: {
-              background: "#FECACA",
-              color: "#DC2626",
-            },
-          },
-        }}/>
+    <Routes>
+      <Route element={<PublicLayout />}>
+        <Route
+          path="/"
+          element={
+            !isAuthenticated ? <Home /> : <Navigate to="/recrutador" />
+          }
+        />
+      </Route>
 
-      <Routes>
-        <Route element={<PublicLayout />}>
-          <Route
-            path="/"
-            element={
-              !isAuthenticated ? <Home /> : <Navigate to="/recrutador" />
-            }
-          />
-        </Route>
-
-        <Route element={<RecruiterLayout />}>
-          <Route
-            path="/recrutador"
-            element={
-              isAuthenticated ? <RecruiterDashboard /> : <Navigate to="/" />
-            }
-          />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      <Route element={<RecruiterLayout />}>
+        <Route
+          path="/recrutador"
+          element={
+            isAuthenticated ? <RecruiterDashboard /> : <Navigate to="/" />
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Toaster position="top-right" reverseOrder={false} 
+          toastOptions={{
+            success: {
+              style: {
+                background: "#BFDBFE",
+                color: "#2563EB",
+              },
+            },
+            error: {
+              style: {
+                background: "#FECACA",
+                color: "#DC2626",
+              },
+            },
+          }}/>
+
+        <AppRoutes />
+      </BrowserRouter>
+    </AuthProvider>
+  );
+}

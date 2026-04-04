@@ -36,7 +36,6 @@ export default function Home() {
                 mostRecent: isMostRecent
             });
 
-            console.log(resp.data);
             setJobs(resp.data);
         } catch (err: any) {
             console.error(err);
