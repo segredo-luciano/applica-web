@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getRecruiterLoggedIn } from "../services/auth.service";
 
 type AuthContextType = {
     isAuthenticated: boolean;
@@ -18,11 +19,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [recruiter, setRecruiter] = useState<any>(null);
 
-  return (
+    useEffect(() => {
+        const initAuth = async () => {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                return;
+            }
+
+            try {
+                const data = await getRecruiterLoggedIn(); 
+                console.log(data)
+
+                setRecruiter(data.recruiter);
+                setIsAuthenticated(true);
+            } catch {
+                localStorage.removeItem("token");
+                setRecruiter(null);
+                setIsAuthenticated(false);
+            } 
+        };
+
+        initAuth();
+    }, []);
+
+    return (
     <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, recruiter, setRecruiter }}>
-      {children}
+        {children}
     </AuthContext.Provider>
-  );
+    );
 };
 
 export const useAuth = () => {
@@ -34,28 +59,3 @@ export const useAuth = () => {
 
   return context;
 };
-
-// const initAuth = async () => {
-//     const token = localStorage.getItem("token");
-
-//     if (!token) return;
-
-//     try {
-//       const response = await fetch(`${API_URL}/auth/me`, {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-
-//       if (!response.ok) throw new Error();
-
-//       const data = await response.json();
-
-//       setRecruiter(data.recruiter);
-//       setIsAuthenticated(true);
-//     } catch {
-//       localStorage.removeItem("token");
-//       setRecruiter(null);
-//       setIsAuthenticated(false);
-//     }
-// };

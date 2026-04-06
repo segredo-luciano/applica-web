@@ -6,11 +6,17 @@ import { getCompanyLogo } from "../utils/getCompanyLogo";
 import { RangeJobFilter } from "../types/rangeJobFilter";
 import { extractDate } from "../utils/dateFormat.js";
 import { useAuth } from "../context/AuthContext.js";
+import { listJobApplications } from "../services/application.service.js";
+import ApplicationView from "../components/ApplicationView.js";
 
 export default function RecruiterDashboard() {
     const [token, setToken] = useState(null);
     const [loading, setLoading] = useState(false);
     const [jobs, setJobs] = useState<Job[] | null>([]);
+    const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+    const [applications, setApplications] = useState<string[]>([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [openModal, setOpenModal] = useState(false);
 
     const [openFilter, setOpenFilter] = useState(false);
 
@@ -38,6 +44,19 @@ export default function RecruiterDashboard() {
             setLoading(false);
         }
     }
+
+    const handleOpenJob = async (job: Job) => {
+        try {
+            setSelectedJob(job);
+            setOpenModal(true);
+
+            const resp = await listJobApplications(job.code);
+            setApplications(resp.data);
+            setCurrentIndex(0);
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     useEffect(() => {
         listRecruiterPosts();
@@ -156,9 +175,8 @@ export default function RecruiterDashboard() {
                                 {jobs?.map((job) => (
                                 <div
                                     key={job.code}
-                                    // onClick={() => handleSelectJob(job)}
-                                    className="flex flex-col items-center justify-center p-4 rounded-xl cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:scale-105"
-                                >
+                                    onClick={() => handleOpenJob(job)}
+                                    className="flex flex-col items-center justify-center p-4 rounded-xl cursor-pointer transition-all duration-300 hover:bg-blue-50 hover:scale-105">
                                     <FolderClosed strokeWidth={3} className="text-blue-900 w-12 h-12 mb-2" />
 
                                     <div className="text-center font-semibold text-gray-800 text-sm">
@@ -184,6 +202,12 @@ export default function RecruiterDashboard() {
                 </div>  
                 )}
             </div>
+            {openModal && (
+                <ApplicationView
+                    jobCode={selectedJob?.code!}
+                    onClose={() => setOpenModal(false)}
+                />
+            )}
         </div>
     );
 }

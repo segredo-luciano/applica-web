@@ -9,4 +9,5 @@ export interface Job {
     limit_date: string;
     recruiter_name: string;
     recruiter_works_here: boolean;
+    isOpened: boolean;
 }
