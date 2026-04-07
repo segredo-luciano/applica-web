@@ -50,8 +50,6 @@ export default function RecruiterDashboard() {
             setSelectedJob(job);
             setOpenModal(true);
 
-            const resp = await listJobApplications(job.code);
-            setApplications(resp.data);
             setCurrentIndex(0);
         } catch (err) {
             console.error(err);

@@ -1,7 +1,8 @@
 export type Application = {
     code: number;
     created_at: string;
-    cv_url: string;
+    cvUrl: string;
     status: string;
     viewed: boolean;
+    isGhost: boolean;
 };

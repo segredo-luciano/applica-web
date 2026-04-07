@@ -28,7 +28,8 @@ export const apply = async (file: File, jobCode: number) => {
 };
 
 export const listJobApplications = async (
-    jobCode: number
+    jobCode: number,
+    page: number
 ) => {
     const token = localStorage.getItem("token");
 
@@ -37,6 +38,10 @@ export const listJobApplications = async (
 
         if(jobCode) {
             params.append('jobCode', jobCode.toString())
+        }
+
+        if(page) {
+            params.append('page', page.toString())
         }
 
         const response = await fetch(`${API_URL}/application?${params.toString()}`, {
