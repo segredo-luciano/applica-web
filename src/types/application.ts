@@ -5,4 +5,6 @@ export type Application = {
     status: string;
     viewed: boolean;
     isGhost: boolean;
+    isGhostRight: boolean;
+    isGhostLeft: boolean;
 };
